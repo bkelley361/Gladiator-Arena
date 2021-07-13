@@ -8,8 +8,8 @@ public class Player extends Creature {
     int baseHealth = 20;
     SpellType spells[];
 
-    public Player(int health, int strength, int spell) {
-        super(health, strength, spell);
+    public Player(int health, int strength, SpellType type) {
+        super(health, strength, type);
     }
 
     public String getStatus() {
