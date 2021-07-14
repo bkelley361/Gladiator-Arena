@@ -13,7 +13,7 @@ public class Queue<T> {
     }
 
     public void enqueue(T item) {
-        queue.add(back, item);
+        queue.addLast(item);
         index += 1;
         front += 1;
     }

@@ -40,6 +40,10 @@ public class Player extends Creature {
         return false;
     }
 
+    public void hurt(int damage) {
+        health -= damage;
+    }
+
     public void levelUp(SpellType type) {
         if (canLevelUp() == true) {
             XP -= 100;
