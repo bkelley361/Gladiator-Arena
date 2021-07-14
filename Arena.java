@@ -2,24 +2,21 @@ import java.util.*;
 
 public class Arena {
     
-    Scanner sc = new Scanner(System.in);
     Queue<Creature> north = new Queue<Creature>();
     Queue<Creature> east = new Queue<Creature>();
     Queue<Creature> south = new Queue<Creature>();
     Queue<Creature> west = new Queue<Creature>();
     Random rand = new Random();
+    Player player = new Player(20, 10);
 
-    public Arena(Scanner sc, Queue<Creature> north, Queue<Creature> east, Queue<Creature> south, Queue<Creature> west) {
-
-        this.sc = sc;
+    public Arena(Queue<Creature> north, Queue<Creature> east, Queue<Creature> south, Queue<Creature> west, Player player, Random rand) {
         this.north = north;
         this.east = east;
         this.south = south;
         this.west = west;
-
+        this.player = player;
+        this.rand = rand;
     }
-    
-    Player player = new Player(20, 10, SpellType.None);
 
     public Queue<Creature> getQueue() {
         Random rand = new Random();
@@ -40,10 +37,10 @@ public class Arena {
 
     public void createMonster() {
         Random rand = new Random();
-        Creature m = new Creature(0, 0, SpellType.None);
+        Creature m = new Creature(0, 0);
         m.health = rand.nextInt(20) + 1;
         m.strength = rand.nextInt(4) + 1;
-        m.type = m.monsterSpell();
+        m.giveSpell(m.monsterSpell());
         getQueue().enqueue(m);
     }
 
@@ -68,7 +65,9 @@ public class Arena {
             while (loop == true) {
                 System.out.println("Would you like to use a normal attack or a spell?");
                 System.out.println("Please enter 1 for normal and 2 for spell");
+                Scanner sc = new Scanner(System.in);
                 String type = sc.nextLine();
+                sc.close();
                 if (type == "1") {
                     int damage = player.attack();
                     victim.hurt(damage);
@@ -125,13 +124,10 @@ public class Arena {
             monstersTurn();
             turnCounter += 1;
             if (player.isDead()) {
+                System.out.println("You lasted " + turnCounter + " turns. Honestly that is pretty bad");
                 gameOver = true;
             }
         }
-
-    }
-
-    public void play() {
 
     }
 
@@ -139,31 +135,53 @@ public class Arena {
     public void surroundings(Queue<Creature> direction) {
         if (! direction.isEmpty()) {
             Creature m = north.peek();
-            System.out.print("There is a monster with " + m.health + " health, " + m.strength + ", and " + m.type + " spells");
+            System.out.println("There is a monster with " + m.health + " health, " + m.strength + " strength, and " + m.type + " spell");
         }
         else {
-            System.out.println("The " + direction.toString() + " is clear for the moment");
+            String dir = "";
+            if (direction == north) {
+                dir = "North";
+            }
+            else if (direction == east) {
+                dir = "East";
+            }
+            else if (direction == south) {
+                dir = "South";
+            }
+            else {
+                dir = "West";
+            }
+            System.out.println("The " + dir + " is clear for the moment");
         }
     }
 
     public Queue<Creature> getDir() {
-        while (true) {
+        boolean loop = true;
+        Scanner sc = new Scanner(System.in);
+        Queue<Creature> queue = north;
+        while (loop) {
             System.out.println("Which direction would you like to attack in?");
-            System.out.println("Please enter N, E, S,  and W for the direction");
+            System.out.println("Please enter N, E, S, and W for the direction");
             String dir = sc.nextLine();
             if (dir == "N") {
-                return north;
+                queue = north;
+                loop = false;
             }
             else if (dir == "E") {
-                return east;
+                queue = east;
+                loop = false;
             }
             else if (dir == "S") {
-                return south;
+                queue = south;
+                loop = false;
             }
             else if (dir == "W") {
-                return west;
+                queue = west;
+                loop = false;
             }
         }
+        sc.close();
+        return queue;
     }
 
     public void monsterAttack(Queue<Creature> dir) {

@@ -51,6 +51,13 @@ public class GladiatorArenaTest {
         assertEquals(null, q.dequeue());
     }
 
+    @Test
+    public void EnqueueMonster() {
+        Queue<Creature> q = new Queue<>();
+        Creature m = new Creature(10, 10);
+        q.enqueue(m);
+        assertEquals(m, q.peek());
+    }
 
 
 }

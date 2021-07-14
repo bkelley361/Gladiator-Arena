@@ -7,12 +7,13 @@ public class Queue<T> {
     int front = 0;
     int back = 0;
     LinkedList<T> queue = new LinkedList<T>(); 
+
     public Queue() {
         
     }
 
     public void enqueue(T item) {
-        queue.addLast(item);
+        queue.add(back, item);
         index += 1;
         front += 1;
     }

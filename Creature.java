@@ -15,10 +15,9 @@ public class Creature {
 
     Random rand = new Random();
 
-    public Creature(int health, int strength, SpellType type) {
+    public Creature(int health, int strength) {
         this.health = health;
         this.strength = strength;
-        this.type = type;
     }
 
     public SpellType monsterSpell() {
@@ -49,8 +48,8 @@ public class Creature {
         health -= damage;
     }
 
-    public void giveSpell(SpellType type) {
-
+    public void giveSpell(SpellType spell) {
+        type = spell;
     }
 
     public String getStatus() {

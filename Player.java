@@ -8,8 +8,9 @@ public class Player extends Creature {
     int baseHealth = 20;
     SpellType spells[];
 
-    public Player(int health, int strength, SpellType type) {
-        super(health, strength, type);
+
+    public Player(int health, int strength) {
+        super(health, strength);
     }
 
     public String getStatus() {
@@ -42,7 +43,7 @@ public class Player extends Creature {
     public void levelUp(SpellType type) {
         if (canLevelUp() == true) {
             XP -= 100;
-            spells[spellAdd] = type;
+            
             spellAdd += 1;
             baseHealth += 10;
             health = baseHealth;
