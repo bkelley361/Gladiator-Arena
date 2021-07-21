@@ -8,7 +8,6 @@ enum SpellType {
 public class Creature {
     int health;
     int strength;
-    int status;
     int frozen;
     int fire;
     SpellType type;
@@ -17,7 +16,7 @@ public class Creature {
 
     public Creature(int health, int strength) {
         this.health = health;
-        this.strength = strength;
+        this.strength = strength; 
     }
 
     public SpellType monsterSpell() {
@@ -45,7 +44,7 @@ public class Creature {
     }
 
     public void hurt(int damage) {
-        health -= damage;
+        this.health -= damage;
     }
 
     public void giveSpell(SpellType spell) {
@@ -53,15 +52,14 @@ public class Creature {
     }
 
     public String getStatus() {
-        if (status == 0) {
-            return "Healthy";
-        }
-        else if (status == 1) {
+        if (fire > 0) {
             return "Burned";
         }
-        else {
+        else if (frozen > 0) {
             return "Frozen";
         }
+
+        return "Healthy";
     }
 
     public int attack() {
@@ -119,19 +117,34 @@ public class Creature {
     }
 
     public int castSpell(SpellType cast) {
+        int castFire = 3;      //Returns so that the game knows a fire spell was used
+        int castFrost = 2;     //Returns so that the game knows a frost spell was used
+        int castLightning = 7; //Returns so that the game knows a lightning spell was used and the damage it deals
+        int castHeal = 5;      //Returns so the game knows a Heal spell was used and the health that was restored
         if (cast == SpellType.Fire) {
-            return 0;
+            return castFire;
         }
         else if (cast == SpellType.Frost) {
-            return 1;
+            return castFrost;
         }
         else if (cast == SpellType.Lightning) {
-            return 7;
+            return castLightning;
         }
         else {
-            return 5;
+            return castHeal;
         }
     }
 
+    public void attackedBySpell(int attack) {
+        if (attack == 3) {
+            fire = attack;
+        }
+        else if (attack == 2) {
+            frozen = attack;
+        }
+        else {
+            hurt(attack);
+        }
+    }
     
 }

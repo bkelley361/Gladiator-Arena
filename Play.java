@@ -8,7 +8,7 @@ public class Play {
         Queue<Creature> south = new Queue<Creature>();
         Queue<Creature> west = new Queue<Creature>();
         Random rand = new Random();
-        Player player = new Player(20, 10);
+        Player player = new Player(20, 10, 0);
         Arena game = new Arena(north, east, south, west, player, rand);
         game.gameloop();
       }

@@ -1,28 +1,16 @@
 public class Player extends Creature {
     int health = 20;
     int srength = 10;
-    int spell = 0;
     int XP = 0;
-    int Status = 0;
-    int spellAdd = 0;
+    int level = 1;
     int baseHealth = 20;
-    SpellType spells[];
+    int maxXP = 100;
+    SpellType spell;
 
 
-    public Player(int health, int strength) {
+    public Player(int health, int strength, int XP) {
         super(health, strength);
-    }
-
-    public String getStatus() {
-        if (Status == 0) {
-            return "Healthy";
-        }
-        else if (Status == 1) {
-            return "Burned";
-        }
-        else {
-            return "Frozen";
-        }
+        this.XP = XP;
     }
 
     public void addXP(int amt) {
@@ -34,24 +22,19 @@ public class Player extends Creature {
     }
 
     public boolean canLevelUp() {
-        if (XP >= 100) {
+        if (XP >= maxXP) {
             return true;
         }
         return false;
     }
 
-    public void hurt(int damage) {
-        health -= damage;
-    }
-
     public void levelUp(SpellType type) {
         if (canLevelUp() == true) {
             XP -= 100;
-            
-            spellAdd += 1;
             baseHealth += 10;
             health = baseHealth;
-            strength += 5; 
+            strength += 5;
+            level++; 
         }
     }
 

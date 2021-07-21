@@ -1,6 +1,5 @@
 import java.util.*;
 
-import javax.swing.plaf.basic.BasicInternalFrameUI.InternalFramePropertyChangeListener;
 
 public class Arena {
     
@@ -9,7 +8,7 @@ public class Arena {
     Queue<Creature> south = new Queue<Creature>();
     Queue<Creature> west = new Queue<Creature>();
     Random rand = new Random();
-    Player player = new Player(20, 10);
+    Player player = new Player(20, 10, 0);
     Scanner sc = new Scanner(System.in);
 
     public Arena(Queue<Creature> north, Queue<Creature> east, Queue<Creature> south, Queue<Creature> west, Player player, Random rand) {
@@ -76,6 +75,14 @@ public class Arena {
                     break;
                 }
                 else if (type.equals("2")) {
+                    int spellType = player.castSpell(player.spell);
+                    if (spellType != 5) {
+                        player.health += 5;
+                        System.out.println("You healed yourself. You now have " + player.health + " hitpoints remaining");
+                    }
+                    else {
+                        victim.attackedBySpell(spellType);
+                    }
                     System.out.println("You used a spell");
                     break;
                 }
