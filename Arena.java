@@ -38,21 +38,27 @@ public class Arena {
     }
 
     public void createMonster() {
+        int begHealth = 0;
+        int begStrength = 0;
+        int healthRange = 20;
+        int strengthRange = 4;
+        int addOne = 1; //So that health and strength are not 0 
         Random rand = new Random();
-        Creature m = new Creature(0, 0);
-        m.health = rand.nextInt(20) + 1;
-        m.strength = rand.nextInt(4) + 1;
+        Creature m = new Creature(begHealth, begStrength);
+        m.health = rand.nextInt(healthRange) + addOne;
+        m.strength = rand.nextInt(strengthRange) + addOne;
         m.giveSpell(m.monsterSpell());
         getQueue().enqueue(m);
     }
 
     public void playersTurn() {
+        int fireDamage = 2;
         if (player.getStatus() == "Frozen") {
             System.out.println("You are frozen");
         }
         else {
             if (player.getStatus() == "Burned") {
-                player.hurt(1);
+                player.hurt(fireDamage);
                 if (player.isDead()) {
                     
                 }
@@ -76,14 +82,15 @@ public class Arena {
                 }
                 else if (type.equals("2")) {
                     int spellType = player.castSpell(player.spell);
-                    if (spellType != 5) {
+                    if (spellType == 5) {
                         player.health += 5;
                         System.out.println("You healed yourself. You now have " + player.health + " hitpoints remaining");
                     }
                     else {
                         victim.attackedBySpell(spellType);
+                        System.out.println("You casted a " + player.spell + " spell");
                     }
-                    System.out.println("You used a spell");
+                    player.type = SpellType.None;
                     break;
                 }
             }
@@ -169,34 +176,36 @@ public class Arena {
     }
 
     public void monsterAttack(Queue<Creature> dir) {
-        if (! dir.isEmpty()) {
-            Creature c = dir.peek();
-            SpellType cast = c.type;
-            String direction = getDir(dir);
-            if (c.type != SpellType.None) {
-                if (cast == SpellType.Fire) {
-                    player.fire();
-                }
-                else if (cast == SpellType.Frost) {
-                    player.freeze();
-                }
-                else if (cast == SpellType.Lightning) {
-                    player.hurt(7);
-                }
-                else {
-                    c.health += 5;
-                }
-                c.type = SpellType.None;
+        if (dir.isEmpty()) {
+            return;
+        }
+        Creature c = dir.peek();
+        SpellType cast = c.type;
+        String direction = getDir(dir);
+        if (c.type != SpellType.None) {
+            if (cast == SpellType.Fire) {
+                player.fire();
+            }
+            else if (cast == SpellType.Frost) {
+                player.freeze();
+            }
+            else if (cast == SpellType.Lightning) {
+                player.hurt(7);
             }
             else {
-                int damage = c.attack();
-                player.hurt(damage);
-                System.out.println("The creature in the " + direction + " attacked you and did " + damage + " amount of damage. You have " + player.health + " hitpoints left");
+                c.health += 5;
             }
-            c.decFireTimer();
-            c.decFreezeTimer();
+            c.type = SpellType.None;
         }
+        else {
+            int damage = c.attack();
+            player.hurt(damage);
+            System.out.println("The creature in the " + direction + " attacked you and did " + damage + " amount of damage. You have " + player.health + " hitpoints left");
+        }
+        c.decFireTimer();
+        c.decFreezeTimer();
     }
+
     public String getDir(Queue<Creature> direction) {
         if (direction == north) {
             return "North";
