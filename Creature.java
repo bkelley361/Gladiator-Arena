@@ -8,8 +8,14 @@ enum SpellType {
 public class Creature {
     int health;
     int strength;
-    int frozen;
-    int fire;
+    int frozenTimer;
+    int fireTimer;
+    int baseHealth;
+
+    public static final int CAST_FIRE = 3;      //Returns so that the game knows a fire spell was used
+    public static final int CAST_FROST = 2;     //Returns so that the game knows a frost spell was used
+    public static final int CAST_LIGHTNING = 7; //Returns so that the game knows a lightning spell was used and the damage it deals
+    public static final int CAST_HEAL = 5;      //Returns so the game knows a Heal spell was used and the health that was restored
     SpellType type;
 
     Random rand = new Random();
@@ -19,18 +25,23 @@ public class Creature {
         this.strength = strength; 
     }
 
-    public SpellType monsterSpell() {
+    public SpellType giveSpell() {
+        int between100 = 100;   // For a random number between 0 and 99
+        int spellTypes = 4;     // Gets a random nuber between 0 and 3 for spell types
+        int fireSpell = 0;      // For a fire spell
+        int frostSpell = 1;     // For a frost spell
+        int lightningSpell = 2; // For a lightning spell
         SpellType spell = SpellType.None;
-        int random = rand.nextInt(100);
-        int type = rand.nextInt(4);
+        int random = rand.nextInt(between100);
+        int type = rand.nextInt(spellTypes);
         if (random > 93) {
-            if (type == 0) {
+            if (type == fireSpell) {
                 spell = SpellType.Fire;
             }
-            if (type == 1) {
+            if (type == frostSpell) {
                 spell = SpellType.Frost;
             }
-            if (type == 2) {
+            if (type == lightningSpell) {
                 spell = SpellType.Lightning;
             }
             else {
@@ -52,10 +63,10 @@ public class Creature {
     }
 
     public String getStatus() {
-        if (fire > 0) {
+        if (fireTimer > 0) {
             return "Burned";
         }
-        else if (frozen > 0) {
+        else if (frozenTimer > 0) {
             return "Frozen";
         }
 
@@ -70,42 +81,30 @@ public class Creature {
     }
 
     public void freeze() {
-        frozen = 2;
+        frozenTimer = 2;
     }
 
     public void fire() {
-        fire = 3;
+        fireTimer = 3;
     }
 
     public boolean isFrozen() {
-        boolean answer = false;
-
-        if (frozen >= 1) {
-            return true;
-        }
-
-        return answer;
+        return (frozenTimer >= 1);
     }
 
     public void decFreezeTimer() {
         if (isFrozen() == true) {
-            frozen -= 1;
+            frozenTimer -= 1;
         }
     }
 
     public boolean isOnFire() {
-        boolean answer = false;
-
-        if (fire >= 1) {
-            return true;
-        }
-
-        return answer;
+        return (fireTimer >= 1);
     }
 
     public void decFireTimer() {
         if (isOnFire() == true) {
-            fire -= 1;
+            fireTimer -= 1;
         }
     }
 
@@ -116,7 +115,7 @@ public class Creature {
         return false;
     }
 
-    public int castSpell(SpellType cast) {
+    public int spellTypeToInt(SpellType cast) {
         int castFire = 3;      //Returns so that the game knows a fire spell was used
         int castFrost = 2;     //Returns so that the game knows a frost spell was used
         int castLightning = 7; //Returns so that the game knows a lightning spell was used and the damage it deals
@@ -136,11 +135,11 @@ public class Creature {
     }
 
     public void attackedBySpell(int attack) {
-        if (attack == 3) {
-            fire = attack;
+        if (attack == CAST_FIRE) {
+            fireTimer = attack;
         }
-        else if (attack == 2) {
-            frozen = attack;
+        else if (attack == CAST_FROST) {
+            frozenTimer = attack;
         }
         else {
             hurt(attack);

@@ -1,6 +1,4 @@
 public class Player extends Creature {
-    int health = 20;
-    int srength = 10;
     int XP = 0;
     int level = 1;
     int baseHealth = 20;

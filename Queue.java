@@ -1,47 +1,66 @@
-import java.util.*;
+
 
 public class Queue<T> {
-    
-    int index = 0;
-    int length = 0;
-    int front = 0;
-    int back = 0;
-    LinkedList<T> queue = new LinkedList<T>(); 
+    Node head;
+    Node tail;
+    int size;
 
-    public Queue() {
-        
+
+    private class Node {
+        T data;
+        Node next;
     }
 
-    public void enqueue(T item) {
-        queue.addLast(item);
-        index += 1;
-        front += 1;
+    public Queue() {
+        head = new Node();
+        head = null;
+        tail = new Node();
+        tail = null;
+        size = 0;
+        }
+
+    public void enqueue(T i) {
+        Node n = new Node();
+        n.data = i;
+        n.next = null;
+        size++;
+        if (head != null) {
+            tail.next = n;
+            tail = n;
+        }
+        else {
+            head = n;
+            tail = n;
+        }
     }
 
     public T dequeue() {
-        T last;
-        if ( ! queue.isEmpty()) {
-            last = queue.getFirst();
-            queue.removeFirst();
+        if (head != null) {
+            T temp = head.data;
+            head = head.next;
+            size--;
+            if (size == 0) {
+                tail = null;
+            }
+            return temp;
         }
         else {
-            return null;
+            throw new IllegalArgumentException("Cannot do that");    
         }
-        front -= 1;
-        index -= 1;
-
-        return last;
     }
 
     public T peek() {
-        return queue.getFirst();
-    }
-
-    public int size() {
-        return queue.size();
+        return head.data;
     }
 
     public boolean isEmpty() {
-        return queue.isEmpty();
+        if (head != null) {
+            return false;
+        }
+        return true;
+    }
+
+    public int size() {
+        return size;
     }
 }

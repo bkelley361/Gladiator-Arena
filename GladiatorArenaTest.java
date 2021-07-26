@@ -46,7 +46,7 @@ public class GladiatorArenaTest {
         assertEquals(2, q.size());
         q.dequeue();
         q.dequeue();
-        assertEquals(null, q.dequeue());
+        assertEquals(0, q.size());
     }
 
     @Test
@@ -148,14 +148,14 @@ public class GladiatorArenaTest {
     @Test
     public void CreatureFrozen1() {
         Creature m = new Creature(20, 10);
-        m.frozen = 2;
+        m.frozenTimer = 2;
         assertTrue(m.isFrozen());
     }
 
     @Test
     public void CreatureFrozen2() {
         Creature m = new Creature(20, 10);
-        m.frozen = 2;
+        m.frozenTimer = 2;
         m.decFreezeTimer();
         assertTrue(m.isFrozen());
     }
@@ -163,7 +163,7 @@ public class GladiatorArenaTest {
     @Test
     public void CreatureFrozen3() {
         Creature m = new Creature(20, 10);
-        m.frozen = 2;
+        m.frozenTimer = 2;
         m.decFreezeTimer();
         m.decFreezeTimer();
         assertFalse(m.isFrozen());
@@ -172,7 +172,7 @@ public class GladiatorArenaTest {
     @Test
     public void CreatureFire1() {
         Creature m = new Creature(20, 10);
-        m.fire = 3;
+        m.fireTimer = 3;
         m.decFireTimer();
         m.decFireTimer();
         m.decFireTimer();
@@ -182,7 +182,7 @@ public class GladiatorArenaTest {
     @Test
     public void CreatureFire2() {
         Creature m = new Creature(20, 10);
-        m.fire = 3;
+        m.fireTimer = 3;
         m.decFireTimer();
         m.decFireTimer();
         assertTrue(m.isOnFire());

@@ -47,7 +47,8 @@ public class Arena {
         Creature m = new Creature(begHealth, begStrength);
         m.health = rand.nextInt(healthRange) + addOne;
         m.strength = rand.nextInt(strengthRange) + addOne;
-        m.giveSpell(m.monsterSpell());
+        m.giveSpell(m.giveSpell());
+        m.baseHealth = m.health;
         getQueue().enqueue(m);
     }
 
@@ -81,7 +82,7 @@ public class Arena {
                     break;
                 }
                 else if (type.equals("2")) {
-                    int spellType = player.castSpell(player.spell);
+                    int spellType = player.spellTypeToInt(player.spell);
                     if (spellType == 5) {
                         player.health += 5;
                         System.out.println("You healed yourself. You now have " + player.health + " hitpoints remaining");
@@ -97,8 +98,8 @@ public class Arena {
             player.decFreezeTimer();
             player.decFireTimer();
             if (victim.isDead()) {
-                System.out.println("The monster is dead");
-                player.addXP(victim.health);
+                player.addXP(victim.baseHealth);
+                System.out.println("The monster is dead. You have " + player.XP + " XP points");
                 if (player.canLevelUp()) {
                     SpellType newSpell;
                     int randSpell = rand.nextInt(4);
@@ -211,13 +212,13 @@ public class Arena {
             return "North";
         }
         else if (direction == east) {
-            return "North";
+            return "East";
         }
         else if (direction == south) {
-            return "North";
+            return "South";
         }
         else {
-            return "North";
+            return "West";
         }
     }
     
