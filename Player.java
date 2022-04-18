@@ -5,7 +5,6 @@ public class Player extends Creature {
     int maxXP = 100;
     SpellType spell;
 
-
     public Player(int health, int strength, int XP) {
         super(health, strength);
         this.XP = XP;
@@ -32,8 +31,10 @@ public class Player extends Creature {
             baseHealth += 10;
             health = baseHealth;
             strength += 5;
-            level++; 
+            level++;
         }
+
+        spell = type;
     }
 
 }
